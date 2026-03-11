@@ -16,7 +16,7 @@ services:
       BUCKET_ACCESS_SECRET: minioadminpw
       BUCKET_NAME: files
     ports:
-      - "8081:8081"
+      - "8080:8080"
     networks:
       - app
     depends_on:
