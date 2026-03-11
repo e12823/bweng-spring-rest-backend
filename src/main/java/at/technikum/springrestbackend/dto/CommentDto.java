@@ -64,20 +64,25 @@ public class CommentDto {
         this.updatedAt = updatedAt;
     }
 
-    public static CommentDto fromEntity(Comment c) {
-        if (c == null) return null;
+    public static CommentDto fromEntity(Comment comment) {
+        if (comment == null) return null;
+
         CommentDto dto = new CommentDto();
-        dto.setId(c.getId());
-        dto.setContent(c.getContent());
-        if (c.getUser() != null) {
-            dto.setUserId(c.getUser().getId());
-            dto.setUsername(c.getUser().getUsername());
+        dto.setId(comment.getId());
+        dto.setContent(comment.getContent());
+
+        if (comment.getUser() != null) {
+            dto.setUserId(comment.getUser().getId());
+            dto.setUsername(comment.getUser().getUsername());
         }
-        if (c.getPost() != null) {
-            dto.setPostId(c.getPost().getId());
+
+        if (comment.getPost() != null) {
+            dto.setPostId(comment.getPost().getId());
         }
-        dto.setCreatedAt(c.getCreatedAt());
-        dto.setUpdatedAt(c.getUpdatedAt());
+
+        dto.setCreatedAt(comment.getCreatedAt());
+        dto.setUpdatedAt(comment.getUpdatedAt());
+
         return dto;
     }
 }

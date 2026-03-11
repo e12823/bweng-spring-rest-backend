@@ -6,10 +6,9 @@
 
     <property name="fileExtensions" value="java"/>
 
-    <!-- Check for appropriate line length; ignore Spring framework's long generic type names -->
+    <!-- Check for appropriate line  length -->
     <module name="LineLength">
         <property name="max" value="120"/>
-        <property name="ignorePattern" value="^.*AuthorizationManagerRequestMatcherRegistry.*$"/>
     </module>
 
     <module name="TreeWalker">

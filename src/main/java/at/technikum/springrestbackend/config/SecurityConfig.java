@@ -54,8 +54,8 @@ public class SecurityConfig {
 
                     // Comments - only authenticated users and admins can create/update/delete
                     .requestMatchers(HttpMethod.POST, "/posts/*/comments").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/posts//comments/*").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/posts//comments/*").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/posts/*/comments/*").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/posts/*/comments/*").hasAnyRole("USER", "ADMIN")
 
                     // File upload
                     .requestMatchers(HttpMethod.POST, "/files/**").hasAnyRole("USER", "ADMIN")

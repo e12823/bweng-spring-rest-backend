@@ -33,11 +33,10 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentDto> createComment(
             @PathVariable Long postId,
-            @RequestParam Long userId,
             @Valid @RequestBody CreateCommentRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                CommentDto.fromEntity(commentService.createComment(postId, userId, request))
+            CommentDto.fromEntity(commentService.createComment(postId, request))
         );
     }
 

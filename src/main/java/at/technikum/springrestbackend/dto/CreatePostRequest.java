@@ -10,6 +10,7 @@ public class CreatePostRequest {
     private String title;
 
     @NotBlank(message = "Content is required")
+    @Size(max = 3000, message = "Content must not exceed 3000 characters")      
     private String content;
 
     public CreatePostRequest() {
