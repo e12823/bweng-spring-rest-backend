@@ -57,14 +57,13 @@ public class BlogPostController {
                 BlogPostDto.fromEntity(blogPostService.getPostById(id))
         );
     }
-
+    
     @PostMapping
     public ResponseEntity<BlogPostDto> createPost(
-            @RequestParam Long userId,
             @Valid @RequestBody CreatePostRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                BlogPostDto.fromEntity(blogPostService.createPost(userId, request))
+                BlogPostDto.fromEntity(blogPostService.createPost(request))
         );
     }
 

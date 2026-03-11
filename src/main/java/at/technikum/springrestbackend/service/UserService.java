@@ -8,9 +8,14 @@ import at.technikum.springrestbackend.repository.CommentRepository;
 import at.technikum.springrestbackend.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -43,6 +48,8 @@ public class UserService {
     }
 
     public UserDto updateUser(Long id, UpdateUserRequest request) {
+        ensureSelfOrAdmin(id);
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -75,6 +82,8 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long id) {
+        ensureSelfOrAdmin(id);
+
         if (!userRepository.existsById(id)) {
             throw new IllegalArgumentException("User not found");
         }
@@ -83,5 +92,28 @@ public class UserService {
         commentRepository.deleteByPostUserId(id);
         blogPostRepository.deleteByUserId(id);
         userRepository.deleteById(id);
+    }
+
+    private Optional<User> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof User user)) {
+            return Optional.empty();
+        }
+        return Optional.of(user);
+    }
+
+    private void ensureSelfOrAdmin(Long targetUserId) {
+        Optional<User> currentUser = getCurrentUser();
+        if (currentUser.isEmpty()) {
+            return;
+        }
+
+        User user = currentUser.get();
+        boolean isAdmin = "ADMIN".equalsIgnoreCase(user.getRole());
+        boolean isSelf = targetUserId != null && targetUserId.equals(user.getId());
+
+        if (!isAdmin && !isSelf) {
+            throw new AccessDeniedException("You are not allowed to modify this user");
+        }
     }
 }
